@@ -1,7 +1,11 @@
-from os import makedirs, path, listdir
+from os import makedirs, path, listdir, getenv
 from json import dump, load
 from openai import OpenAI
 from time import sleep
+from dotenv import load_dotenv
+
+# load .env
+load_dotenv()
 
 class OpenAIPythonIntegration(OpenAI):
     """Custom class to utilize Python to directly work with OpenAI to do various functions"""
@@ -9,32 +13,10 @@ class OpenAIPythonIntegration(OpenAI):
         self.applicationName = applicationName
         self.virtualEnvironmentName = virtualEnvironmentName
         
-        self.apiKey = self.get_api_key()
-        self.organizationId = self.get_organization_key()
+        self.apiKey = getenv('OPENAI_API_KEY')
+        self.organizationId = getenv('OPENAI_ORGANIZATION_ID')
     
         super().__init__(organization=self.organizationId, api_key=self.apiKey)
-
-    def get_api_key(self):
-        """Function to get the API key to use for authorization when opening client object"""
-        try:
-            fileName = f'./{self.virtualEnvironmentName}/API_KEY.txt'
-            
-            with open(fileName, 'r', encoding='utf-8') as data:
-                key = data.read().strip()
-            return key
-        except FileNotFoundError as e:
-            print(f"Error: API key file not found! Full message: ${e}")
-        
-    def get_organization_key(self):
-        """Function to get the Organization key to use with the API key when opening client object"""
-        try:
-            fileName = f'./{self.virtualEnvironmentName}/ORGANIZATION_KEY.txt'
-            
-            with open(fileName, 'r', encoding='utf-8') as data:
-                key = data.read().strip()
-            return key
-        except FileNotFoundError as e:
-            print(f"Error: Organization key file not found! Full message: ${e}")
 
     def create_assistant(self, name, instructions, metadata = {}, assistantType='retrieval', gptModel='gpt-4-1106-preview', mode='w', messageIndent=0):
         """Function to directly use OpenAI to create an assistant"""

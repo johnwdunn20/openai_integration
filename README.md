@@ -6,6 +6,7 @@ The goal of saving local data to cut down on cost and time for additional API ca
 1.) Create a virtual environment
 
 2.) Create a "API_KEY.txt" and "ORGANIZATION_KEY.txt" file in your virtual environment folder with your API and Organization code  values from OpenAI (Note: This file and all other contents in the virtual environment folder are excluded from GitHub for security reasons).  If you want to provide these a different way, you'll need to tweak the functions in the integration files in the "src/caller/" location.
+JWD: updated to use .env
 
 3.) Run "pip install -e ." in your root folder to ensure the main caller package is avaiable to the other applications
 
